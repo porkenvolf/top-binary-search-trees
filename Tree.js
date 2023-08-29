@@ -32,15 +32,15 @@ export default class Tree {
             return;
         } else if (value < node.data) {
             nextNode = node.left;
-            if (nextNode === null) node.left = new Node(value);
+            if (nextNode === null) node.left = new Node(value, node);
         } else if (value > node.data) {
             nextNode = node.right;
-            if (nextNode === null) node.right = new Node(value);
+            if (nextNode === null) node.right = new Node(value, node);
         }
         this.insert(value, nextNode);
     }
     find(value, node = this.root) {
-        if (node === null) return;
+        if (node === null) return null;
 
         let nextNode;
         if (value === node.data) {
@@ -52,18 +52,56 @@ export default class Tree {
         }
         return this.find(value, nextNode);
     }
-    /* 
+
     delete(value, node = this.root) {
+        const toDelete = this.find(value);
+        const parent = this.find(toDelete.parent);
 
-        // exit condition
-        if (node === null) return
-
+        // determine amount of children of node to delete
         let children;
-        for (const key in node) {
-            if (node[key]) children += 1;
+        if (toDelete.left && toDelete.right) children = 2;
+        else if (!toDelete.left && !toDelete.right) children = 0;
+        else children = 1;
+
+        // proceed to delete
+        if (children === 0) {
+            parent.right === toDelete
+                ? (parent.right = null)
+                : (parent.left = null);
+        } else if (children === 1) {
+            const substitute = toDelete.left || toDelete.right;
+            parent.right === toDelete
+                ? (parent.right = substitute)
+                : (parent.left = substitute);
+        } else if (children === 2) {
+            const substitute = this.smallest(toDelete.right);
+
+            // is root?
+            if (parent === null) {
+                this.find(substitute.parent).left = substitute.right;
+                substitute.left = toDelete.left;
+                substitute.right = toDelete.right;
+                substitute.parent = null;
+                this.root = substitute;
+            } else {
+                if (this.find(substitute.parent) !== toDelete) {
+                    this.find(substitute.parent).left = substitute.right;
+                    substitute.right = toDelete.right;
+                }
+                substitute.left = toDelete.left;
+                substitute.parent = toDelete.parent;
+                parent.right === toDelete
+                    ? (parent.right = substitute)
+                    : (parent.left = substitute);
+            }
         }
-        return children;
-    } */
+    }
+    smallest(node = this.root) {
+        if (node.left === null) return node;
+
+        return this.smallest(node.left);
+    }
+
     prettyPrint(node = this.root, prefix = "", isLeft = true) {
         if (node === null) {
             return;
@@ -86,8 +124,12 @@ export default class Tree {
     }
 }
 
-const tree = new Tree([6, 4, 9, 23, 45, 87, 2, 5, 1, 87, 2, 87]);
+const tree = new Tree([7, 4, 9, 23, 45, 87, 2, 5, 1, 87, 2, 87]);
 console.clear();
-
-console.log(tree.find(87));
+tree.insert(10);
+tree.insert(46);
+tree.insert(6);
+tree.prettyPrint();
+tree.delete(4);
+//console.log(tree.root);
 tree.prettyPrint();
