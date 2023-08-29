@@ -7,7 +7,7 @@ export default class Tree {
         this.array = removeDuplicates(mergeSort(array));
         this.root = this.build(this.array);
     }
-    build(array) {
+    build(array, parent = null) {
         if (array.length === 0) return null;
         const midPoint = Math.floor(array.length / 2);
         const left = array.slice(0, midPoint);
@@ -18,7 +18,10 @@ export default class Tree {
         console.log(data);
         console.log(left);
         console.log(right); */
-        return new Node(data, this.build(left), this.build(right));
+        const newNode = new Node(data, parent);
+        newNode.left = this.build(left, newNode);
+        newNode.right = this.build(right, newNode);
+        return newNode;
     }
     insert(value, node = this.root) {
         // exit condition
@@ -85,7 +88,6 @@ export default class Tree {
 
 const tree = new Tree([6, 4, 9, 23, 45, 87, 2, 5, 1, 87, 2, 87]);
 console.clear();
-tree.insert(24);
-tree.insert(25);
-console.log(tree.find(23));
+
+console.log(tree.find(87));
 tree.prettyPrint();
