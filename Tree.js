@@ -20,6 +20,22 @@ export default class Tree {
         console.log(right); */
         return new Node(data, this.build(left), this.build(right));
     }
+    insert(value, node = this.root) {
+        // exit condition
+        if (node === null) return;
+
+        let nextNode;
+        if (value === node.data) {
+            return;
+        } else if (value < node.data) {
+            nextNode = node.left;
+            if (nextNode === null) node.left = new Node(value);
+        } else if (value > node.data) {
+            nextNode = node.right;
+            if (nextNode === null) node.right = new Node(value);
+        }
+        this.insert(value, nextNode);
+    }
     prettyPrint(node = this.root, prefix = "", isLeft = true) {
         if (node === null) {
             return;
@@ -43,4 +59,7 @@ export default class Tree {
 }
 
 const tree = new Tree([6, 4, 9, 23, 45, 87, 2, 5, 1, 87, 2, 87]);
+tree.insert(24);
+tree.insert(25);
+tree.insert(26);
 tree.prettyPrint();
