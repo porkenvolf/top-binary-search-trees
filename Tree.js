@@ -36,6 +36,31 @@ export default class Tree {
         }
         this.insert(value, nextNode);
     }
+    find(value, node = this.root) {
+        if (node === null) return;
+
+        let nextNode;
+        if (value === node.data) {
+            return node;
+        } else if (value < node.data) {
+            nextNode = node.left;
+        } else if (value > node.data) {
+            nextNode = node.right;
+        }
+        return this.find(value, nextNode);
+    }
+    /* 
+    delete(value, node = this.root) {
+
+        // exit condition
+        if (node === null) return
+
+        let children;
+        for (const key in node) {
+            if (node[key]) children += 1;
+        }
+        return children;
+    } */
     prettyPrint(node = this.root, prefix = "", isLeft = true) {
         if (node === null) {
             return;
@@ -59,7 +84,8 @@ export default class Tree {
 }
 
 const tree = new Tree([6, 4, 9, 23, 45, 87, 2, 5, 1, 87, 2, 87]);
+console.clear();
 tree.insert(24);
 tree.insert(25);
-tree.insert(26);
+console.log(tree.find(23));
 tree.prettyPrint();
