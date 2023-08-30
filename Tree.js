@@ -169,8 +169,7 @@ export default class Tree {
         return output;
     }
     height(node = this.root, depth = 0) {
-        // FIX: Height is defined as the number of edges in longest path from a given node to a leaf node.
-        if (node === null) return depth;
+        if (node === null) return depth - 1;
 
         let depthLeft = this.height(node.left, depth + 1);
         let depthRight = this.height(node.right, depth + 1);
@@ -208,12 +207,29 @@ export default class Tree {
     }
 }
 
-const tree = new Tree([7, 4, 9, 23, 45, 87, 2, 5, 1, 87, 2, 87]);
-tree.insert(10);
-tree.insert(46);
-tree.insert(6);
+const tree = new Tree([
+    7,
+    7,
+    23,
+    2,
+    8,
+    7,
+    ,
+    2,
+    ,
+    5,
+    98,
+    2,
+    1,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+]);
 tree.prettyPrint();
 //console.log(tree.root);
 tree.prettyPrint();
 console.log(tree.postorder());
-console.log(tree.depth(tree.find(23)));
+console.log(tree.height());
