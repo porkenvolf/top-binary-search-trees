@@ -187,6 +187,9 @@ export default class Tree {
         if (Math.abs(heightLeft - heightRight) <= 1) return true;
         else return false;
     }
+    rebalance() {
+        this.root = this.build(this.inorder());
+    }
     prettyPrint(node = this.root, prefix = "", isLeft = true) {
         if (node === null) {
             return;
@@ -235,6 +238,8 @@ console.log(tree.inorder());
 console.log(tree.height());
 tree.insert(99);
 tree.insert(100);
+tree.insert(101);
+tree.insert(102);
 tree.prettyPrint();
-
-console.log(tree.isBalanced());
+tree.rebalance();
+tree.prettyPrint();
