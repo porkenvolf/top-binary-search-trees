@@ -52,7 +52,6 @@ export default class Tree {
         }
         return this.find(value, nextNode);
     }
-
     delete(value, node = this.root) {
         const toDelete = this.find(value);
         const parent = this.find(toDelete.parent);
@@ -75,17 +74,18 @@ export default class Tree {
                 : (parent.left = substitute);
         } else if (children === 2) {
             const substitute = this.smallest(toDelete.right);
+            const substituteParent = this.find(substitute.parent);
 
             // is root?
             if (parent === null) {
-                this.find(substitute.parent).left = substitute.right;
+                substituteParent.left = substitute.right;
                 substitute.left = toDelete.left;
                 substitute.right = toDelete.right;
                 substitute.parent = null;
                 this.root = substitute;
             } else {
-                if (this.find(substitute.parent) !== toDelete) {
-                    this.find(substitute.parent).left = substitute.right;
+                if (substituteParent !== toDelete) {
+                    substituteParent.left = substitute.right;
                     substitute.right = toDelete.right;
                 }
                 substitute.left = toDelete.left;
@@ -101,7 +101,43 @@ export default class Tree {
 
         return this.smallest(node.left);
     }
+    levelOrder(
+        fn = (item, output) => {
+            output.push(item);
+            return output;
+        }
+    ) {
+        const node = (node = this.root);
+        if (node === null) return;
 
+        const queue = [];
+        queue.push(node);
+
+        let output = [];
+        while (queue.length >= 1) {
+            const current = queue.shift();
+
+            output = fn(current.data, output);
+            if (current.left) queue.push(current.left);
+            if (current.right) queue.push(current.right);
+        }
+        return output;
+    }
+    inorder(
+        fn = (item, output) => {
+            output.push(item);
+            return output;
+        },
+        node = this.root,
+        output = []
+    ) {
+        if (node === null) return;
+
+        this.inorder(fn, node.left, output);
+        output = fn(node.data, output);
+        this.inorder(fn, node.right, output);
+        return output;
+    }
     prettyPrint(node = this.root, prefix = "", isLeft = true) {
         if (node === null) {
             return;
@@ -125,11 +161,11 @@ export default class Tree {
 }
 
 const tree = new Tree([7, 4, 9, 23, 45, 87, 2, 5, 1, 87, 2, 87]);
-console.clear();
 tree.insert(10);
 tree.insert(46);
 tree.insert(6);
 tree.prettyPrint();
-tree.delete(4);
+tree.delete(23);
 //console.log(tree.root);
 tree.prettyPrint();
+console.log(tree.inorder());
