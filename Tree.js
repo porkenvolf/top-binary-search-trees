@@ -168,6 +168,14 @@ export default class Tree {
         output = fn(node.data, output);
         return output;
     }
+    height(node = this.root, depth = 0) {
+        if (node === null) return depth;
+
+        let depthLeft = this.height(node.left, depth + 1);
+        let depthRight = this.height(node.right, depth + 1);
+
+        return Math.max(depthLeft, depthRight);
+    }
     prettyPrint(node = this.root, prefix = "", isLeft = true) {
         if (node === null) {
             return;
@@ -195,7 +203,7 @@ tree.insert(10);
 tree.insert(46);
 tree.insert(6);
 tree.prettyPrint();
-tree.delete(23);
 //console.log(tree.root);
 tree.prettyPrint();
 console.log(tree.postorder());
+console.log(tree.height());
