@@ -169,12 +169,22 @@ export default class Tree {
         return output;
     }
     height(node = this.root, depth = 0) {
+        // FIX: Height is defined as the number of edges in longest path from a given node to a leaf node.
         if (node === null) return depth;
 
         let depthLeft = this.height(node.left, depth + 1);
         let depthRight = this.height(node.right, depth + 1);
 
         return Math.max(depthLeft, depthRight);
+    }
+    depth(searchNode = this.root, startNode = this.root, depth = 0) {
+        if (startNode === null) return;
+        if (searchNode === startNode) return depth;
+        const searchLeft = this.depth(searchNode, startNode.left, depth + 1);
+        const searchRight = this.depth(searchNode, startNode.right, depth + 1);
+
+        if (typeof searchLeft === "number") return searchLeft;
+        if (typeof searchRight === "number") return searchRight;
     }
     prettyPrint(node = this.root, prefix = "", isLeft = true) {
         if (node === null) {
@@ -206,4 +216,4 @@ tree.prettyPrint();
 //console.log(tree.root);
 tree.prettyPrint();
 console.log(tree.postorder());
-console.log(tree.height());
+console.log(tree.depth(tree.find(23)));
