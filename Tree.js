@@ -13,11 +13,6 @@ export default class Tree {
         const left = array.slice(0, midPoint);
         const right = array.slice(midPoint + 1);
         const data = array[midPoint];
-        /* 
-        console.log(array);
-        console.log(data);
-        console.log(left);
-        console.log(right); */
         const newNode = new Node(data, parent);
         newNode.left = this.build(left, newNode);
         newNode.right = this.build(right, newNode);
@@ -185,6 +180,13 @@ export default class Tree {
         if (typeof searchLeft === "number") return searchLeft;
         if (typeof searchRight === "number") return searchRight;
     }
+    isBalanced() {
+        const heightLeft = this.height(this.root.left);
+        const heightRight = this.height(this.root.right);
+
+        if (Math.abs(heightLeft - heightRight) <= 1) return true;
+        else return false;
+    }
     prettyPrint(node = this.root, prefix = "", isLeft = true) {
         if (node === null) {
             return;
@@ -229,7 +231,10 @@ const tree = new Tree([
     17,
 ]);
 tree.prettyPrint();
-//console.log(tree.root);
-tree.prettyPrint();
-console.log(tree.postorder());
+console.log(tree.inorder());
 console.log(tree.height());
+tree.insert(99);
+tree.insert(100);
+tree.prettyPrint();
+
+console.log(tree.isBalanced());
