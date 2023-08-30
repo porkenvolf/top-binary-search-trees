@@ -102,7 +102,7 @@ export default class Tree {
             return output;
         }
     ) {
-        const node = (node = this.root);
+        const node = this.root;
         if (node === null) return;
 
         const queue = [];
@@ -211,35 +211,3 @@ export default class Tree {
         }
     }
 }
-
-const tree = new Tree([
-    7,
-    7,
-    23,
-    2,
-    8,
-    7,
-    ,
-    2,
-    ,
-    5,
-    98,
-    2,
-    1,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-]);
-tree.prettyPrint();
-console.log(tree.inorder());
-console.log(tree.height());
-tree.insert(99);
-tree.insert(100);
-tree.insert(101);
-tree.insert(102);
-tree.prettyPrint();
-tree.rebalance();
-tree.prettyPrint();
