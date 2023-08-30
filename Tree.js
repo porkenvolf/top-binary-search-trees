@@ -138,6 +138,36 @@ export default class Tree {
         this.inorder(fn, node.right, output);
         return output;
     }
+    preorder(
+        fn = (item, output) => {
+            output.push(item);
+            return output;
+        },
+        node = this.root,
+        output = []
+    ) {
+        if (node === null) return;
+
+        output = fn(node.data, output);
+        this.preorder(fn, node.left, output);
+        this.preorder(fn, node.right, output);
+        return output;
+    }
+    postorder(
+        fn = (item, output) => {
+            output.push(item);
+            return output;
+        },
+        node = this.root,
+        output = []
+    ) {
+        if (node === null) return;
+
+        this.postorder(fn, node.left, output);
+        this.postorder(fn, node.right, output);
+        output = fn(node.data, output);
+        return output;
+    }
     prettyPrint(node = this.root, prefix = "", isLeft = true) {
         if (node === null) {
             return;
@@ -168,4 +198,4 @@ tree.prettyPrint();
 tree.delete(23);
 //console.log(tree.root);
 tree.prettyPrint();
-console.log(tree.inorder());
+console.log(tree.postorder());
